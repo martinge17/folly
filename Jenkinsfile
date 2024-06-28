@@ -7,7 +7,7 @@ podTemplate(containers: [
             git url: 'https://github.com/martinge17/folly.git', branch: 'main'
             container('ubuntu') {
                 stage('Install deps') {
-                    sh 'apt update && sudo apt install -y python3'
+                    sh 'apt update && apt install -y python3'
                     sh './build/fbcode_builder/getdeps.py install-system-deps --recursive' 
                 }
                 stage('Build folly'){
