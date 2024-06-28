@@ -1,5 +1,5 @@
 podTemplate(containers: [
-    containerTemplate(name: 'ubuntu', image: 'ubuntu:latest', command: 'sleep', args: '99d'),
+    containerTemplate(name: 'ubuntu', image: 'ubuntu:24.04', command: 'cat'),
   ]) {
 
     node(POD_LABEL) {
