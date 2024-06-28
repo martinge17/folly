@@ -435,7 +435,7 @@ class InstallSysDepsCmd(ProjectCmdBase):
         elif manager == "deb":
             packages = sorted(set(all_packages["deb"]))
             if packages:
-                cmd_args = ["sudo", "apt", "install", "-y"] + packages
+                cmd_args = ["apt", "install", "-y"] + packages
         elif manager == "homebrew":
             packages = sorted(set(all_packages["homebrew"]))
             if packages:
@@ -1058,7 +1058,7 @@ jobs:
                     out.write("      run: df -h\n")
                     # remove the unused github supplied android dev tools
                     out.write("    - name: Free up disk space\n")
-                    out.write("      run: sudo rm -rf /usr/local/lib/android\n")
+                    out.write("      run: rm -rf /usr/local/lib/android\n")
                     out.write("    - name: Show disk space after freeing up\n")
                     out.write("      run: df -h\n")
             else:
@@ -1069,11 +1069,11 @@ jobs:
                 build_opts.allow_system_packages
                 and build_opts.host_type.get_package_manager()
             ):
-                sudo_arg = "sudo "
+                
                 allow_sys_arg = " --allow-system-packages"
                 if build_opts.host_type.get_package_manager() == "deb":
                     out.write("    - name: Update system package info\n")
-                    out.write(f"      run: {sudo_arg}apt-get update\n")
+                    out.write(f"      run: apt-get update\n")
 
                 out.write("    - name: Install system deps\n")
                 if build_opts.is_darwin():
@@ -1085,7 +1085,7 @@ jobs:
                 if build_opts.is_linux() or build_opts.is_freebsd():
                     out.write("    - name: Install packaging system deps\n")
                     out.write(
-                        f"      run: {sudo_arg}python3 build/fbcode_builder/getdeps.py --allow-system-packages install-system-deps --recursive patchelf\n"
+                        f"      run: python3 build/fbcode_builder/getdeps.py --allow-system-packages install-system-deps --recursive patchelf\n"
                     )
 
             projects = loader.manifests_in_dependency_order()
