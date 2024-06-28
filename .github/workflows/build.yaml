@@ -1,0 +1,23 @@
+name: Build
+
+on:
+  workflow_dispatch: # allows manual triggering
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: arc-runner-set 
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Update system package info
+        run: sudo apt-get update
+      - name: Install Python
+        run: sudo apt install python3
+      - name: Install deps
+        run: sudo ./build/fbcode_builder/getdeps.py install-system-deps --recursive
+      - name: Build folly
+        run: python3 build/fbcode_builder/getdeps.py --allow-system-packages build --src-dir=. folly  --project-install-prefix folly:/usr/local
+      - name: Test folly
+        run: python3 build/fbcode_builder/getdeps.py --allow-system-packages test --src-dir=. folly  --project-install-prefix folly:/usr/local
+      
